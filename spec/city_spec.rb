@@ -1,7 +1,5 @@
-require 'rspec'
-require 'pry'
 require 'spec_helper'
-require 'city'
+
 
 describe 'City' do
 

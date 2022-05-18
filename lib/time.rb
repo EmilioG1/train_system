@@ -32,10 +32,21 @@ class Time
   end
 
   def self.find(id)
-    times = DB.exec("SELECT * FROM albums WHERE id = #{id};").first
+    times = DB.exec("SELECT * FROM times WHERE id = #{id};").first
     if times
       time = times.fetch('time')
-      id = time.fetch
-      
+      id = time.fetch('id').to_i
+      Time.new({:time => time, :id => id})
+    else
+     nil
+    end
+  end
+
+  def update(time)
+    @time = time
+  end
+  
+  def delete
+    DB.exec("DELETE FROM times WHERE id = #{@id};")
   end
 end
