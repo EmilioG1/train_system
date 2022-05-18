@@ -3,6 +3,11 @@ require 'spec_helper'
 
 describe 'City' do
 
+  before(:each) do
+    @time = Train_Time.new({:arrive_time => '01:01:01', :id => nil})
+    @time.save
+  end  
+  
   describe('#==') do
     it('is the same city if it has same attributes as another city') do
       city1 = City.new({:name => 'Portland', :state => 'OR', :id => nil})
@@ -50,13 +55,13 @@ describe 'City' do
   end
   
   describe('#update') do
-    it('updates a city by id') do
-      city1 = City.new({:name => 'Portland', :state => 'OR', :id => nil})
-      city1.save
-      city2 = City.new({:name => 'Boston', :state => 'MA', :id => nil})
-      city2.save
-      city1.delete
-      expect(City.all).to(eq([city2]))
+    it("adds a train to an city") do
+    train = Train.new({:name => "Blue", :time_id => @time.id, :id => nil})
+    train.save
+    city = City.new({:name => "San Francisco", :state => 'CA', :id => nil})
+    city.save
+    city.update({:train_name => "Blue"})
+    expect(city.trains).to(eq([train]))
     end
   end
   

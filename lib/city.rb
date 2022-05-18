@@ -46,9 +46,29 @@ class City
     @id = result.first().fetch("id").to_i
   end
   
-  def update (name, state)
-    @name = name
-    @state = state
-    DB.exec("UPDATE cities SET name = '#{name}, #{state}' WHERE id = #{id};")
+  def update(attributes)
+    if (attributes.has_key?(:name)) && (attributes.fetch(:name) != nil)
+      @name = attributes.fetch(:name)
+      DB.exec("UPDATE cities SET name = '#{name}' WHERE id = #{id};")
+    elsif (attributes.has_key?(:train_name)) && (attributes.fetch(:train_name) != nil)
+      train_name = attributes.fetch(:train_name)
+      train = DB.exec("SELECT * FROM trains WHERE lower(name)='#{train_name.downcase}';").first
+      if train != nil
+        DB.exec("INSERT INTO cities_trains (city_id, train_id) VALUES (#{@id}, #{train['id'].to_i});")
+      end
+    end
+  end
+
+  def trains
+    trains = []
+    results = DB.exec("SELECT train_id FROM cities_trains WHERE city_id = #{@id};")
+    results.each do |result|
+      train_id = result.fetch("train_id").to_i
+      train = DB.exec("SELECT * FROM trains WHERE id = #{train_id};")
+      name = train.first.fetch("name")
+      time_id = train.first.fetch("time_id").to_i
+      trains.push(Train.new({:name => name, :time_id => time_id, :id => train_id}))
+    end
+    trains
   end
 end
