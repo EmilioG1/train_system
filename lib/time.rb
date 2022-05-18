@@ -1,9 +1,9 @@
-class Time
+class Train_Time
   attr_reader :id
-  attr_accessor :time
+  attr_accessor :arrive_time
 
   def initialize(attributes)
-    @time = attributes.fetch(:time)
+    @arrive_time = attributes.fetch(:arrive_time)
     @id = attributes.fetch(:id)
   end
 
@@ -15,15 +15,15 @@ class Time
     returned_times = DB.exec("SELECT * FROM times;")
     times = []
     returned_times.each do |time|
-      time = time.fetch('time')
+      arrive_time = time.fetch('arrive_time')
       id = time.fetch('id').to_i
-      times.push(Time.new({:time => time, :id => id}))
+      times.push(Train_Time.new({:arrive_time => arrive_time, :id => id}))
     end
     times
   end
 
   def save 
-    result = DB.exec("INSERT INTO times (time) VALUES ('#{time}') RETURNING id;")
+    result = DB.exec("INSERT INTO times (arrive_time) VALUES ('#{arrive_time}') RETURNING id;")
     @id = result.first.fetch('id').to_i
   end
 
@@ -34,16 +34,16 @@ class Time
   def self.find(id)
     times = DB.exec("SELECT * FROM times WHERE id = #{id};").first
     if times
-      time = times.fetch('time')
-      id = time.fetch('id').to_i
-      Time.new({:time => time, :id => id})
+      arrive_time = times.fetch('arrive_time')
+      id = times.fetch('id').to_i
+      Train_Time.new({:arrive_time => arrive_time, :id => id})
     else
      nil
     end
   end
 
   def update(time)
-    @time = time
+    @arrive_time = time
   end
   
   def delete
