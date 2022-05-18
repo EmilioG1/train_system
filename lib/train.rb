@@ -11,12 +11,12 @@ class Train
   end
 
   def self.all
-    returned_trains = DB.exec("SELECT * FROM cities;")
+    returned_trains = DB.exec("SELECT * FROM trains;")
     trains = []
     returned_trains.each() do |train|
       name = train.fetch("name")
-      id = train.fetch("id")
-      time_id = train.fetch("time_id")
+      id = train.fetch("id").to_i
+      time_id = train.fetch("time_id").to_i
       trains.push(Train.new({:name => name, :id => id, :time_id => time_id}))
     end
     trains
@@ -30,7 +30,7 @@ class Train
     DB.exec("DELETE FROM trains *;")
   end
 
-  def self.find(id)
+  def self.find(idexit)
     trains = DB.exec("SELECT * FROM trains WHERE id = #{id};").first
     name = trains.fetch("name")
     id = trains.fetch("id").to_i
@@ -38,9 +38,15 @@ class Train
     Train.new({:name => name, :id => id, :time_id => time_id})
   end
 
+  # def find_city
+  #   DB.exec("SELECT times.* FROM trains JOIN cities_trains ON (trains.id = cities_trains.train_id) JOIN times ON (cities_trains.city_id == cities.id) WHERE trains.id = #{@id};")
+  #   # DB.exec("JOIN cities_trains ON (trains.id = cities_trains.train_id);")
+  #   # DB.exec("JOIN times ON (cities_trains.city_id == cities.id) WHERE trains.id = #{@id};")
+  # end
+
   def delete
-    DB.exec("DELETE FROM cities_trains WHERE train_id = #{id};")
-    DB.exec("DELETE FROM trains WHERE id = #{id};")
+    DB.exec("DELETE FROM cities_trains WHERE train_id = #{@id};")
+    DB.exec("DELETE FROM trains WHERE id = #{@id};")
   end
 
   def save

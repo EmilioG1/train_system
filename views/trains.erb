@@ -1,0 +1,14 @@
+<h1>EME Train Services<h1>
+<h2>Available trains<h2>
+
+<a href="/trains/new">Add a new train</a>
+
+<% if @trains.any? %>
+  <ul>
+    <% @trains.each do |train| %>
+      <li><a href="/trains/<%= train.id%>"><%= train.name %></a> <%= train.find_time %></li>
+    <% end %>
+  </ul>
+<% else %>
+  <p>There are curently no trains to display.</p>
+<% end %>

@@ -52,4 +52,27 @@ describe 'Train' do
       expect(Train.find(train1.id)).to(eq(train1))
     end
   end
+
+  describe('#delete') do
+    it('deletes a train by id') do
+      time2 = Train_Time.new({:arrive_time => '01:01:01', :id => nil})
+      time2.save
+      train1 = Train.new({:name => 'Blue', :time_id => @time.id, :id => nil})
+      train1.save
+      train2 = Train.new({:name => 'Green', :time_id => time2.id, :id => nil})
+      train2.save
+      train1.delete
+      expect(Train.all).to(eq([train2]))
+    end
+  end
+
+  describe('.find_time') do
+    it('finds a time by train id') do
+      time1 = Train_Time.new({:arrive_time => '01:01:01', :id => nil})
+      time1.save
+      train1 = Train.new({:name => 'Blue', :time_id => @time.id, :id => nil})
+      train1.save
+      expect(train1.time_id).to(eq([time1]))
+    end
+  end
 end
