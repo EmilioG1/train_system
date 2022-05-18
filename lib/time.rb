@@ -1,6 +1,6 @@
 class Time
   attr_reader :id
-  attr_accessor :Time
+  attr_accessor :time
 
   def initialize(attributes)
     @time = attributes.fetch(:time)
@@ -23,6 +23,19 @@ class Time
   end
 
   def save 
-    
+    result = DB.exec("INSERT INTO times (time) VALUES ('#{time}') RETURNING id;")
+    @id = result.first.fetch('id').to_i
+  end
+
+  def self.clear
+    DB.exec("DELETE FROM times *;")
+  end
+
+  def self.find(id)
+    times = DB.exec("SELECT * FROM albums WHERE id = #{id};").first
+    if times
+      time = times.fetch('time')
+      id = time.fetch
+      
   end
 end
