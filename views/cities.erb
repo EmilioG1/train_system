@@ -1,0 +1,14 @@
+<h1>EME Train Services<h1>
+<h2>Available cities<h2>
+
+<a href="/cities/new">Add a new city</a>
+
+<% if @cities.any? %>
+  <ul>
+    <% @cities.each do |city| %>
+      <li><a href="/cities/<%= city.id %>"><%= city.name %>, <%= city.state %></li></a> 
+    <% end %>
+  </ul>
+<% else %>
+  <p>There are curently no cities to display.</p>
+<% end %>

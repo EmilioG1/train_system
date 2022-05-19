@@ -309,6 +309,13 @@ COPY public.tickets (id, train_id, passenger_id, cost) FROM stdin;
 --
 
 COPY public.times (id, arrive_time) FROM stdin;
+1	20:27:00
+2	14:22:00
+3	20:27:00
+4	14:22:00
+5	17:55:00
+6	17:55:00
+7	17:55:00
 \.
 
 
@@ -317,6 +324,13 @@ COPY public.times (id, arrive_time) FROM stdin;
 --
 
 COPY public.trains (id, name, time_id) FROM stdin;
+1	red	1
+2	Blue	2
+3	red	3
+4	Blue	4
+5	green	5
+6	green	6
+7	green	7
 \.
 
 
@@ -352,14 +366,14 @@ SELECT pg_catalog.setval('public.tickets_id_seq', 1, false);
 -- Name: times_id_seq; Type: SEQUENCE SET; Schema: public; Owner: emiliogonzales
 --
 
-SELECT pg_catalog.setval('public.times_id_seq', 1, false);
+SELECT pg_catalog.setval('public.times_id_seq', 7, true);
 
 
 --
 -- Name: trains_id_seq; Type: SEQUENCE SET; Schema: public; Owner: emiliogonzales
 --
 
-SELECT pg_catalog.setval('public.trains_id_seq', 1, false);
+SELECT pg_catalog.setval('public.trains_id_seq', 7, true);
 
 
 --

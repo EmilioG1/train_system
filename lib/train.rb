@@ -30,13 +30,26 @@ class Train
     DB.exec("DELETE FROM trains *;")
   end
 
-  def self.find(idexit)
+  def self.find(id)
     trains = DB.exec("SELECT * FROM trains WHERE id = #{id};").first
     name = trains.fetch("name")
     id = trains.fetch("id").to_i
     time_id = trains.fetch("time_id").to_i
     Train.new({:name => name, :id => id, :time_id => time_id})
   end
+
+  # take all from times table where the id matches the time_id for trains
+  def find_time
+    returned_arrive_time = DB.exec("SELECT arrive_time FROM times WHERE id = #{@time_id};")
+    arrive_time_array = []
+    returned_arrive_time.each do |time|
+      arrival = time.fetch("arrive_time")
+      arrive_time_array.push(arrival)
+    end
+    arrive_time = arrive_time_array[0]
+    arrive_time
+  end
+
 
   # def find_city
   #   DB.exec("SELECT times.* FROM trains JOIN cities_trains ON (trains.id = cities_trains.train_id) JOIN times ON (cities_trains.city_id == cities.id) WHERE trains.id = #{@id};")
